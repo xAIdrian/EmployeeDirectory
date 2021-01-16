@@ -1,5 +1,6 @@
 package com.amohnacs.squareemployeedirectory.ui.main
 
+import android.telephony.PhoneNumberUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -51,7 +52,7 @@ class EmployeeAdapter @Inject constructor() : RecyclerView.Adapter<EmployeeAdapt
                     .into(binding.image)
             binding.name.text = employee.fullName
             binding.email.text = employee.emailAddress
-            binding.number.text = employee.phoneNumber
+            binding.number.text = PhoneNumberUtils.formatNumber(employee.phoneNumber)
             binding.employeeType.text = employee.employeeType?.value
             binding.biography.text = employee.biography
         }

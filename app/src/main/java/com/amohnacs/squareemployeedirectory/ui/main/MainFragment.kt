@@ -34,6 +34,9 @@ class MainFragment : InjectionFragment() {
             it.layoutManager = LinearLayoutManager(requireActivity())
             it.adapter = adapter
         }
+        binding.errorText.setOnClickListener {
+            viewModel.getEmployees()
+        }
         return binding.root
     }
 
@@ -42,7 +45,6 @@ class MainFragment : InjectionFragment() {
         viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
         viewModel.getEmployees()
         viewModel.employees.observe(viewLifecycleOwner, Observer {
-            binding.recyclerView.visibility = View.VISIBLE
             adapter.updateItems(it)
         })
         viewModel.errorLiveEvent.observe(viewLifecycleOwner, Observer {

@@ -23,18 +23,20 @@ class MainViewModel @Inject constructor(
         disposable.add(
                 repository.fetchEmployees()
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError {
-                            loadingEvent.value = false
-                            errorLiveEvent.value = it.message
-                        }
-                        .subscribe { response ->
-                            loadingEvent.value = false
-                            if (response.employees?.isEmpty() == false) {
-                                employees.value = response.employees
-                            } else {
-                                errorLiveEvent.value = "Empty employees"
-                            }
-                        }
+                        .subscribe(
+                                { response ->
+                                    loadingEvent.value = false
+                                    if (response.employees?.isEmpty() == false) {
+                                        employees.value = response.employees
+                                    } else {
+                                        errorLiveEvent.value = "Empty employees.\nClick here to retry"
+                                    }
+                                },
+                                {
+                                    loadingEvent.value = false
+                                    errorLiveEvent.value = "Error making request.\nClick here to retry"
+                                }
+                        )
         )
     }
 
